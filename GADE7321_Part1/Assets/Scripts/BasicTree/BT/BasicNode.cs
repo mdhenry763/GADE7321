@@ -19,7 +19,7 @@ namespace BasicBehaviourTree
         protected List<BasicNode> children;
         
         //Take care of shared data
-        private Dictionary<string, object> dataContext = new();
+        private Dictionary<string, object> _dataContext = new();
 
         public BasicNode()
         {
@@ -40,7 +40,46 @@ namespace BasicBehaviourTree
 
         public virtual BasicNodeStates Evaluate() => BasicNodeStates.Failure;
 
+        public void SetData(string key, object value)
+        {
+            _dataContext[key] = value;
+        }
 
+        public object GetData(string key)
+        {
+            object value = null;
+            if (_dataContext.TryGetValue(key, out value))
+                return value;
+
+            BasicNode node = parent;
+            while (node != null)
+            {
+                value = node.GetData(key);
+                if (value != null)
+                    return value;
+                node = node.parent;
+            }
+            return null;
+        }
+
+        public bool ClearData(string key)
+        {
+            if (_dataContext.ContainsKey(key))
+            {
+                _dataContext.Remove(key);
+                return true;
+            }
+
+            BasicNode node = parent;
+            while (node != null)
+            {
+                bool cleared = node.ClearData(key);
+                if (cleared)
+                    return true;
+                node = node.parent;
+            }
+            return false;
+        }
 
     }
 }
