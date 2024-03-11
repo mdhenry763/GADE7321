@@ -3,31 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ChaseNode : Node
+public class ChasePlayerNode : Node
 {
     private Transform target;
     private NavMeshAgent agent;
-    private EnemyAI ai;
+    private float distance;
 
-    public ChaseNode(Transform target, NavMeshAgent agent, EnemyAI ai)
+    public ChasePlayerNode(Transform target, NavMeshAgent agent, float distanceToAttack)
     {
         this.target = target;
         this.agent = agent;
-        this.ai = ai;
+        this.distance = distanceToAttack;
     }
 
     public override NodeState Evaluate()
     {
         float distance = Vector3.Distance(target.position, agent.transform.position);
-        if(distance > 0.2f)
+        if(agent.remainingDistance < distance)
         {
-            agent.isStopped = false;
             agent.SetDestination(target.position);
             return NodeState.Running;
         }
         else
         {
-            agent.isStopped = true;
             return NodeState.Success;
         }
        
