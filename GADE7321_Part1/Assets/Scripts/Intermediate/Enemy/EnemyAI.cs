@@ -39,12 +39,12 @@ public class EnemyAI : MonoBehaviour
     {
         ChasePlayerNode chasePlayerNode = new(playerTransform, agent, 0.2f);
         HealthNode healthNode = new HealthNode(this, lowHealthThreshold);
-        RangeNode chasingRangeNode = new RangeNode(chaseRange, playerTransform, transform);
-        RangeNode shootingRangeNode = new RangeNode(shootingRange, playerTransform, transform);
+        PlayerNearNode chasingPlayerNearNode = new PlayerNearNode(chaseRange, playerTransform, transform);
+        PlayerNearNode shootingPlayerNearNode = new PlayerNearNode(shootingRange, playerTransform, transform);
         ShootNode shootNode = new ShootNode(agent, this);
 
-        Sequence chaseSequence = new Sequence(new List<Node> { chasingRangeNode, chasePlayerNode });
-        Sequence shootSequence = new Sequence(new List<Node> { shootingRangeNode, shootNode });
+        Sequence chaseSequence = new Sequence(new List<Node> { chasingPlayerNearNode, chasePlayerNode });
+        Sequence shootSequence = new Sequence(new List<Node> { shootingPlayerNearNode, shootNode });
         
         //Evasion Sequence
         //Evade Sequence

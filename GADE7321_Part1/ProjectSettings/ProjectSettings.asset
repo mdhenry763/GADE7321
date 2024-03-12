@@ -865,8 +865,8 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: GADE7321_Part1
-  metroPackageVersion: 
+  metroPackageName: GADE7321Part1
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -874,7 +874,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: GADE7321_Part1
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: GADE7321_Part1
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0

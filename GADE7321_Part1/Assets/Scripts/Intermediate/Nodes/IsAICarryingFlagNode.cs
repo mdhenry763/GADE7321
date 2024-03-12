@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 public class IsAICarryingFlagNode : Node
 {
@@ -13,7 +14,7 @@ public class IsAICarryingFlagNode : Node
 
     public override NodeState Evaluate()
     {
-        if (CheckFlag.IsCarryFlag(enemy))
+        if (HelperMethods.IsCarryFlag(enemy))
         {
             return NodeState.Success;
         }

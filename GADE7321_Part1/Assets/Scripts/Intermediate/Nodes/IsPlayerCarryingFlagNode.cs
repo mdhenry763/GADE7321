@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utils;
 
 public class IsPlayerCarryingFlagNode : Node
 {
@@ -11,7 +12,7 @@ public class IsPlayerCarryingFlagNode : Node
 
     public override NodeState Evaluate()
     {
-        if (CheckFlag.IsCarryFlag(player))
+        if (HelperMethods.IsCarryFlag(player))
         {
             return NodeState.Success;
         }
