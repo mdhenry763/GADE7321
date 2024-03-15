@@ -28,9 +28,9 @@ public class Selector : Node
                     //Evaluate next child
                     break;
                 case NodeState.Failure:
-                    _nodeState = NodeState.Failure;
-                    return _nodeState;
-                    break;
+                    continue;
+                default:
+                    continue;
             }
         }
 

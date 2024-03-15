@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 
-public class PlayerNearNode : Node
+public class CheckNearNode : Node
 {
     private float nearDistance;
-    private Transform player;
+    private Transform target;
     private Transform enemy;
 
-    public PlayerNearNode(float nearDistance, Transform player, Transform enemy)
+    public CheckNearNode(float nearDistance, Transform target, Transform enemy)
     {
         this.nearDistance = nearDistance;
-        this.player = player;
+        this.target = target;
         this.enemy = enemy;
     }
     
     
     public override NodeState Evaluate()
     {
-        return HelperMethods.IsDistanceLessThan(player, enemy, nearDistance)
+        return HelperMethods.IsDistanceLessThan(target, enemy, nearDistance)
             ? NodeState.Success
             : NodeState.Failure;
     }

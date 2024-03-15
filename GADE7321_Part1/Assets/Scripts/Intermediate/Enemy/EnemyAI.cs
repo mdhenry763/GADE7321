@@ -37,20 +37,6 @@ public class EnemyAI : MonoBehaviour
 
     private void ConstructBehaviourTree()
     {
-        ChasePlayerNode chasePlayerNode = new(playerTransform, agent, 0.2f);
-        HealthNode healthNode = new HealthNode(this, lowHealthThreshold);
-        PlayerNearNode chasingPlayerNearNode = new PlayerNearNode(chaseRange, playerTransform, transform);
-        PlayerNearNode shootingPlayerNearNode = new PlayerNearNode(shootingRange, playerTransform, transform);
-        ShootNode shootNode = new ShootNode(agent, this);
-
-        Sequence chaseSequence = new Sequence(new List<Node> { chasingPlayerNearNode, chasePlayerNode });
-        Sequence shootSequence = new Sequence(new List<Node> { shootingPlayerNearNode, shootNode });
-        
-        //Evasion Sequence
-        //Evade Sequence
-        Selector findCoverSelector = new Selector(new List<Node> { chaseSequence, chaseSequence });
-        Sequence mainCoverSequence = new Sequence(new List<Node> { });
-        topNode = new Selector(new List<Node> { chaseSequence, shootSequence });
     }
 
     void Update()

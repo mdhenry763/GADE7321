@@ -1,7 +1,7 @@
 using UnityEngine;
 using Utils;
 
-namespace Intermediate.Nodes
+namespace Task.Nodes
 {
     public class AttackPlayerNode : Node
     {

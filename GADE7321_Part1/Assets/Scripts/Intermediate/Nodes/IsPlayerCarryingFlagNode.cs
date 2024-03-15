@@ -5,7 +5,7 @@ public class IsPlayerCarryingFlagNode : Node
 {
     private Transform player;
 
-    public IsPlayerCarryingFlagNode(Transform Enemy)
+    public IsPlayerCarryingFlagNode(Transform player)
     {
         this.player = player;
     }
