@@ -12,7 +12,7 @@ namespace Task.Nodes
         public PickUpFlagNode(Transform enemy, NavMeshAgent enemyAgent, Transform flag)
         {
             this.enemy = enemy;
-            this.enemyAgent = this.enemyAgent;
+            this.enemyAgent = enemyAgent;
             this.flag = flag;
         }
         

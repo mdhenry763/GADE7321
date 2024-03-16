@@ -15,9 +15,9 @@ namespace Player
             anim.SetFloat(runAnim, speed);
         }
 
-        public void PunchAnim(bool isPunching)
+        public void PunchAnim()
         {
-            anim.SetBool(fightingAnim, isPunching);
+            anim.SetTrigger(fightingAnim);
         }
         
     }

@@ -7,13 +7,14 @@ public class IsAICarryingFlagNode : Node
 {
     private Transform enemy;
 
-    public IsAICarryingFlagNode(Transform Enemy)
+    public IsAICarryingFlagNode(Transform enemy)
     {
         this.enemy = enemy;
     }
 
     public override NodeState Evaluate()
     {
+        
         if (HelperMethods.IsCarryFlag(enemy))
         {
             return NodeState.Success;

@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     private void HandlePunch(InputAction.CallbackContext obj)
     {
         _playerMovementState = PlayerMovementState.Attacking;
-        animControl.PunchAnim(true);
+        animControl.PunchAnim();
     }
 
     // Update is called once per frame
@@ -61,11 +61,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (moveDir.sqrMagnitude != 0)
         {
+            _playerMovementState = PlayerMovementState.Running;
             transform.Translate(movePos * Time.deltaTime * playerSpeed, Space.World);
         }
+
+        if (_playerMovementState == PlayerMovementState.Running)
+        {
+            animControl.RunAnim(input.y);
+        }
         
-        
-        animControl.RunAnim(input.y);
         
         
         
