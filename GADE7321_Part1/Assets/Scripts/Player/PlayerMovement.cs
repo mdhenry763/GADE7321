@@ -1,0 +1,80 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Player;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public enum PlayerMovementState
+{
+    Attacking,
+    Running,
+    Idle,
+}
+
+public class PlayerMovement : MonoBehaviour
+{
+
+    [Header("References: ")] 
+    public PAnimController animControl;
+    
+    [Header("Settings: ")] 
+    public float turnRate = 45;
+    public float playerSpeed = 7;
+    
+    
+    private Controls playerActions;
+    private PlayerMovementState _playerMovementState;
+    
+    private void Awake()
+    {
+        if (playerActions == null)
+        {
+            playerActions = new Controls();
+        }
+    }
+
+    private void OnEnable()
+    {
+        playerActions.Player.Enable();
+        playerActions.Player.Fire.performed += HandlePunch;
+    }
+
+    private void HandlePunch(InputAction.CallbackContext obj)
+    {
+        _playerMovementState = PlayerMovementState.Attacking;
+        animControl.PunchAnim(true);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        Vector2 input = playerActions.Player.Move.ReadValue<Vector2>();
+        MovePlayer(input);
+        RotatePlayer(input);
+    }
+
+    void MovePlayer(Vector2 input)
+    {
+        Vector3 moveDir = new Vector3(0, 0, input.y);
+        Vector3 movePos = transform.forward * input.y;
+
+        if (moveDir.sqrMagnitude != 0)
+        {
+            transform.Translate(movePos * Time.deltaTime * playerSpeed, Space.World);
+        }
+        
+        
+        animControl.RunAnim(input.y);
+        
+        
+        
+    }
+
+    void RotatePlayer(Vector2 input)
+    {
+        Vector3 moveDir = new Vector3(0, input.x, 0);
+        transform.Rotate(moveDir * turnRate);
+    }
+    
+}
