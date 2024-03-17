@@ -17,7 +17,7 @@ public class ShootNode : Node
     public override NodeState Evaluate()
     {
         agent.isStopped = true;
-        ai.ShootPlayer();
+        //ai.ShootPlayer();
         //Change behaviour
         return NodeState.Running;
     }

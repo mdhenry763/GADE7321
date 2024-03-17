@@ -21,14 +21,16 @@ public class Sequence : Node
             {
                 case NodeState.Running:
                     isChildRunning = true;
-                    break;
+                    continue;
                 case NodeState.Success:
                     //Evaluate next child
-                    break;
+                    continue;
                 case NodeState.Failure:
                     _nodeState = NodeState.Failure;
                     return _nodeState;
-                    break;
+                default:
+                    _nodeState = NodeState.Success;
+                    return _nodeState;
             }
         }
 

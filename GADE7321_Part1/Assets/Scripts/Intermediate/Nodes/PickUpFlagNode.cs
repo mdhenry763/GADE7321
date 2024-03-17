@@ -9,16 +9,19 @@ namespace Task.Nodes
         private NavMeshAgent enemyAgent;
         private Transform flag;
         
-        public PickUpFlagNode(Transform enemy, NavMeshAgent enemyAgent, Transform flag)
+        public PickUpFlagNode(Transform enemy, NavMeshAgent enemyAgent, Transform flag, IObserver observer)
         {
             this.enemy = enemy;
             this.enemyAgent = enemyAgent;
             this.flag = flag;
+            AddObserver(observer);
+            NotifyObservers("Entering pick-Up flag");
         }
         
         
         public override NodeState Evaluate()
         {
+            
             float distance = Vector3.Distance(enemy.position, flag.position);
             if (distance > 0.2f)
             {

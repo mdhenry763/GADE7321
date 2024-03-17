@@ -5,7 +5,7 @@ using UnityEngine;
 using Task.Nodes;
 using UnityEngine.AI;
 
-public class Tree : MonoBehaviour
+public class Tree : MonoBehaviour, IObserver
 {
     private readonly List<Node> tree = new();
     private Node root = null;
@@ -35,7 +35,7 @@ public class Tree : MonoBehaviour
 
     void SetupLeafNodes()
     {
-        leafNodes.Add(Nodes.PickUpFlag, new PickUpFlagNode(enemyAI, enemyAgent, enemyFlag));
+        leafNodes.Add(Nodes.PickUpFlag, new PickUpFlagNode(enemyAI, enemyAgent, enemyFlag, this));
         leafNodes.Add(Nodes.IsAICarryingFlag, new IsAICarryingFlagNode(enemyAI));
         leafNodes.Add(Nodes.IsPlayerCarryingFlag, new IsPlayerCarryingFlagNode(player));
         leafNodes.Add(Nodes.BaseDistanceCheck, new IsPlayerCarryingFlagNode(player));
@@ -63,13 +63,13 @@ public class Tree : MonoBehaviour
         Node captureFlag = BuildSelectorBranch(new List<Node>
         {
             new IsAICarryingFlagNode(enemyAI),
-            new PickUpFlagNode(enemyAI, enemyAgent, enemyFlag),
+            new PickUpFlagNode(enemyAI, enemyAgent, enemyFlag, this),
         });
 
         Node resetPlayerFlag = BuildSequenceBranch(new List<Node>
         {
             new PlayerDroppedFlagNode(distanceOutBase, playerBase, playerFlag, player),
-            new PickUpFlagNode(enemyAI, enemyAgent, playerFlag)
+            new PickUpFlagNode(enemyAI, enemyAgent, playerFlag, this)
             
         });
 
@@ -124,6 +124,11 @@ public class Tree : MonoBehaviour
     private void Update()
     {
         root.Evaluate();
+    }
+
+    public void OnNotify(string name)
+    {
+        Debug.Log($"Entering Node: {name}");
     }
 }
 

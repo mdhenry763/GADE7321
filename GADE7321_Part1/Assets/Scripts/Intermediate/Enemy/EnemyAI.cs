@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour, IObserver
 {
     [Header("Health Settings: ")]
     [SerializeField] private float maxHealth;
@@ -15,6 +15,8 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float chaseRange;
     [SerializeField] private float shootingRange;
     [SerializeField] private Transform playerTransform;
+
+    [SerializeField] private Subject _playerSubject;
     
     //Construction of BTree
     private Node topNode;
@@ -30,46 +32,19 @@ public class EnemyAI : MonoBehaviour
 
     void Start()
     {
-        
+
         currentHealth = maxHealth;
-        ConstructBehaviourTree();
     }
 
-    private void ConstructBehaviourTree()
-    {
-    }
 
     void Update()
     {
-        if(currentHealth < 100)
-         currentHealth += Time.deltaTime * healthRestoreRate;
-        topNode.Evaluate();
-        if (topNode.nodeState == NodeState.Failure)
-        {
-            Debug.Log("System failure");
-        }
-    }
-
-    private void OnMouseDown()
-    {
-        currentHealth -= 10f;
-    }
-
-    public float GetCurrentHealth()
-    {
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        return currentHealth;
-    }
-
-    public void ShootPlayer()
-    {
-        Debug.Log("Shoot Player");
-    }
-
-    public void ChasePlayer()
-    {
-        Debug.Log("Chase Player");
+        
     }
     
-    
+
+    public void OnNotify(string msg)
+    {
+        Debug.Log("message: " + msg);
+    }
 }
