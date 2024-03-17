@@ -27,8 +27,8 @@ public abstract class Node
     }
     
     //Observer
-    public void AddObserver(IObserver obs) => _subject.AddObserver(obs);
-    public void RemoveObserver(IObserver obs) => _subject.RemoveObserver(obs);
+    public void AddObserver(IBTObserver obs) => _subject.AddObserver(obs);
+    public void RemoveObserver(IBTObserver obs) => _subject.RemoveObserver(obs);
     protected void NotifyObservers(string msg) => _subject.NotifyObservers(msg);
     
     public abstract NodeState Evaluate();

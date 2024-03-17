@@ -9,12 +9,12 @@ namespace Task.Nodes
         private NavMeshAgent enemyAgent;
         private Transform flag;
         
-        public PickUpFlagNode(Transform enemy, NavMeshAgent enemyAgent, Transform flag, IObserver observer)
+        public PickUpFlagNode(Transform enemy, NavMeshAgent enemyAgent, Transform flag, IBTObserver ibtObserver)
         {
             this.enemy = enemy;
             this.enemyAgent = enemyAgent;
             this.flag = flag;
-            AddObserver(observer);
+            AddObserver(ibtObserver);
             NotifyObservers("Entering pick-Up flag");
         }
         

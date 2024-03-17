@@ -5,7 +5,7 @@ using UnityEngine;
 using Task.Nodes;
 using UnityEngine.AI;
 
-public class Tree : MonoBehaviour, IObserver
+public class Tree : MonoBehaviour, IBTObserver
 {
     private readonly List<Node> tree = new();
     private Node root = null;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour, IObserver
+public class EnemyAI : MonoBehaviour, IBTObserver
 {
     [Header("Health Settings: ")]
     [SerializeField] private float maxHealth;

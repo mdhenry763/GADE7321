@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class Subject
 {
-    private List<IObserver> _observers = new List<IObserver>();
+    private List<IBTObserver> _observers = new List<IBTObserver>();
 
-    public void AddObserver(IObserver observer)
+    public void AddObserver(IBTObserver ibtObserver)
     {
-        _observers.Add(observer);
+        _observers.Add(ibtObserver);
     }
 
-    public void RemoveObserver(IObserver observer)
+    public void RemoveObserver(IBTObserver ibtObserver)
     {
-        _observers.Remove(observer);
+        _observers.Remove(ibtObserver);
     }
 
     public void NotifyObservers(string msg)
