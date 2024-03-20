@@ -28,6 +28,11 @@ public class FlagHandler : MonoBehaviour
 
     private void CheckFlagEvent(Collider other)
     {
+        if(TryGetComponent<FlagComponent>( out FlagComponent test))
+        {
+            return;
+        }
+        
         if (other.TryGetComponent<FlagComponent>( out FlagComponent flag))
         {
             if (flag.FlagHolder == _flagHolder)

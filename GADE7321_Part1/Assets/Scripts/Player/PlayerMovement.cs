@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Player;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 public enum PlayerMovementState
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("References: ")] 
     public PAnimController animControl;
+    public NavMeshAgent agent;
     
     [Header("Settings: ")] 
     public float turnRate = 45;
@@ -62,16 +64,13 @@ public class PlayerMovement : MonoBehaviour
         if (moveDir.sqrMagnitude != 0)
         {
             _playerMovementState = PlayerMovementState.Running;
-            transform.Translate(movePos * Time.deltaTime * playerSpeed, Space.World);
+            agent.Move(moveDir * Time.deltaTime * playerSpeed);
         }
 
         if (_playerMovementState == PlayerMovementState.Running)
         {
             animControl.RunAnim(input.y);
         }
-        
-        
-        
         
     }
 

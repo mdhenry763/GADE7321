@@ -58,7 +58,8 @@ public class Tree : MonoBehaviour, IBTObserver
         return selector;
     }
 
-    public void BuildTree()
+    //Capture Flag
+    private Node BuildCaptureFlagBranch()
     {
         Node captureFlag = BuildSelectorBranch(new List<Node>
         {
@@ -66,13 +67,11 @@ public class Tree : MonoBehaviour, IBTObserver
             new PickUpFlagNode(enemyAI, enemyAgent, enemyFlag, this),
         });
 
-        Node resetPlayerFlag = BuildSequenceBranch(new List<Node>
-        {
-            new PlayerDroppedFlagNode(distanceOutBase, playerBase, playerFlag, player),
-            new PickUpFlagNode(enemyAI, enemyAgent, playerFlag, this)
-            
-        });
-
+        return captureFlag;
+    }
+    
+    private Node BuildAttackPlayerBranch()
+    {
         Node chasePlayer = BuildSequenceBranch(new List<Node>
         {
             new IsPlayerCarryingFlagNode(player),
@@ -90,6 +89,13 @@ public class Tree : MonoBehaviour, IBTObserver
             chasePlayer,
             attack
         });
+
+        return attackPlayer;
+    }
+    
+    private Node BuildReturnHomeBranch()
+    {
+        
         Node returnHome = BuildSequenceBranch(new List<Node>
         {
             new IsAICarryingFlagNode(enemyAI),
@@ -108,11 +114,31 @@ public class Tree : MonoBehaviour, IBTObserver
             evadePlayer,
             returnHome
         });
-        
 
+        return returnToBase;
+    }
+    
+    private Node ResetOpponentFlag()
+    {
+        Node resetPlayerFlag = BuildSequenceBranch(new List<Node>
+        {
+            new PlayerDroppedFlagNode(distanceOutBase, playerBase, playerFlag, player),
+            new PickUpFlagNode(enemyAI, enemyAgent, playerFlag, this)
+            
+        });
+
+        return resetPlayerFlag;
+    }
+
+    private void BuildTree()
+    {
+        var captureFlag = BuildCaptureFlagBranch();
+        var attackPlayer = BuildAttackPlayerBranch();
+        var returnToBase = BuildReturnHomeBranch();
+        var resetPlayerFlag = BuildReturnHomeBranch();
         //Node top = BuildSequenceBranch()
 
-        root = new Selector(new List<Node>
+        root = new Sequence(new List<Node>
         {
             captureFlag,
             attackPlayer,
