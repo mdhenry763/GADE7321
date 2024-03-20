@@ -23,6 +23,8 @@ namespace Task.Nodes
 
         public override NodeState Evaluate()
         {
+            Debug.Log("Attack Player");
+            
             if (HelperMethods.IsDistanceLessThan(playerTransform, enemyTransform, maxDistance))
                 return NodeState.Failure;
             

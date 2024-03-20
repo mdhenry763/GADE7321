@@ -16,10 +16,13 @@ namespace Task.Nodes
             this.playerBase = playerBase;
             this.playerFlag = playerFlag;
             this.player = player;
+            
+            
         }
 
         public override NodeState Evaluate()
         {
+            Debug.Log("Is Dropped Flag");
             if (HelperMethods.IsDistanceLessThan(playerBase, playerFlag, distance)) 
                 return NodeState.Failure;
             else

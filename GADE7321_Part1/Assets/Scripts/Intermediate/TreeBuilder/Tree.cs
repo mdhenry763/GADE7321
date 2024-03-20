@@ -61,7 +61,13 @@ public class Tree : MonoBehaviour, IBTObserver
     //Capture Flag
     private Node BuildCaptureFlagBranch()
     {
-        Node captureFlag = BuildSelectorBranch(new List<Node>
+        // Node captureFlag = BuildSelectorBranch(new List<Node>
+        // {
+        //     new IsAICarryingFlagNode(enemyAI),
+        //     new PickUpFlagNode(enemyAI, enemyAgent, enemyFlag, this),
+        // });
+
+        Node captureFlag = new Selector(new List<Node>
         {
             new IsAICarryingFlagNode(enemyAI),
             new PickUpFlagNode(enemyAI, enemyAgent, enemyFlag, this),
@@ -72,10 +78,12 @@ public class Tree : MonoBehaviour, IBTObserver
     
     private Node BuildAttackPlayerBranch()
     {
+        Debug.Log("Attack Player");
         Node chasePlayer = BuildSequenceBranch(new List<Node>
         {
             new IsPlayerCarryingFlagNode(player),
             new CheckNearNode(nearDistance, enemyBase, enemyAI),
+            new ChasePlayerNode(player, enemyAgent, attackDistance, this)
             
         });
 
@@ -138,7 +146,7 @@ public class Tree : MonoBehaviour, IBTObserver
         var resetPlayerFlag = BuildReturnHomeBranch();
         //Node top = BuildSequenceBranch()
 
-        root = new Sequence(new List<Node>
+        root = new Selector(new List<Node>
         {
             captureFlag,
             attackPlayer,

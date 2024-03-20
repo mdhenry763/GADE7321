@@ -13,10 +13,12 @@ namespace Task.Nodes
         {
             this.baseTransform = baseTransform;
             this.agent = agent;
+            
         }
 
         public override NodeState Evaluate()
         {
+            Debug.Log("Return to base Node");
             agent.SetDestination(baseTransform.position);
 
             if (HelperMethods.IsDistanceLessThan(agent.transform, baseTransform, agent.stoppingDistance))

@@ -8,10 +8,13 @@ public class IsPlayerCarryingFlagNode : Node
     public IsPlayerCarryingFlagNode(Transform player)
     {
         this.player = player;
+        
     }
 
     public override NodeState Evaluate()
     {
+        Debug.Log("Is Player Carrying Flag");
+        
         if (HelperMethods.IsCarryFlag(player))
         {
             return NodeState.Success;

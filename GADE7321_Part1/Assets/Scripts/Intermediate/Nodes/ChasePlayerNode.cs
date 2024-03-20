@@ -14,12 +14,14 @@ public class ChasePlayerNode : Node
         this.target = target;
         this.agent = agent;
         this.distanceToAttack = distanceToAttack;
-        observer.OnNotify("Entering ChaseNode");
+        
         
     }
 
     public override NodeState Evaluate()
     {
+        Debug.Log("Chase Player");
+        
         float distance = Vector3.Distance(target.position, agent.transform.position);
         if(agent.remainingDistance < 30)
         {

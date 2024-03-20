@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Utils;
 
 namespace Task.Nodes
 {
@@ -15,7 +16,6 @@ namespace Task.Nodes
             this.enemyAgent = enemyAgent;
             this.flag = flag;
             AddObserver(ibtObserver);
-            NotifyObservers("Entering pick-Up flag");
         }
         
         
@@ -23,13 +23,15 @@ namespace Task.Nodes
         {
             
             float distance = Vector3.Distance(enemy.position, flag.position);
-            if (distance > 0.2f)
+            if (!HelperMethods.IsCarryFlag(enemy))
             {
                 enemyAgent.SetDestination(flag.position);
+                NotifyObservers("Pick-Up Node Running");
                 return NodeState.Running;
             }
             else
             {
+                NotifyObservers("Pick-Up Node Successful");
                 return NodeState.Success;
             }
         }

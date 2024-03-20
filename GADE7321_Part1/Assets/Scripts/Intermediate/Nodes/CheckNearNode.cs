@@ -14,13 +14,22 @@ public class CheckNearNode : Node
         this.nearDistance = nearDistance;
         this.target = target;
         this.enemy = enemy;
+        
     }
     
     
     public override NodeState Evaluate()
     {
-        return HelperMethods.IsDistanceLessThan(target, enemy, nearDistance)
-            ? NodeState.Success
-            : NodeState.Failure;
+        Debug.Log("Check Near Node");
+        
+        if (HelperMethods.IsDistanceLessThan(target, enemy, nearDistance))
+        {
+            return NodeState.Success;
+        }
+        else
+        {
+            return NodeState.Failure;
+        }
+       
     }
 }

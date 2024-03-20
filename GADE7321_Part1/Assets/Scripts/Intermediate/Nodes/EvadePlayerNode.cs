@@ -19,6 +19,8 @@ namespace Task.Nodes
         public EvadePlayerNode(float strafeMultiplier, Transform player, NavMeshAgent agent, float maxDistance, 
             Vector2 evadeMinMax)
         {
+            
+            
             this.strafeMultiplier = strafeMultiplier;
             this.player = player;
             this.agent = agent;
@@ -31,6 +33,8 @@ namespace Task.Nodes
 
         public override NodeState Evaluate()
         {
+            
+            Debug.Log("Evade Player Node");
             if (!HelperMethods.IsDistanceLessThan(player, agent.transform, maxDistance))
             {
                 return NodeState.Success;

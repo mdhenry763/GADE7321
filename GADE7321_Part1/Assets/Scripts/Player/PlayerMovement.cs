@@ -64,7 +64,8 @@ public class PlayerMovement : MonoBehaviour
         if (moveDir.sqrMagnitude != 0)
         {
             _playerMovementState = PlayerMovementState.Running;
-            agent.Move(moveDir * Time.deltaTime * playerSpeed);
+            //transform.Translate(movePos * Time.deltaTime * playerSpeed, Space.World);
+            agent.Move(movePos * Time.deltaTime * playerSpeed);
         }
 
         if (_playerMovementState == PlayerMovementState.Running)
