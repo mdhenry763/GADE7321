@@ -5,16 +5,17 @@ using UnityEngine;
 
 public class FlagComponent : MonoBehaviour
 {
-    public GameObject FlagPrefab;
     public Transform FlagParent;
     public FlagHolder FlagHolder;
+    public bool isHolding;
 
 }
 
 public enum FlagHolder
 {
     Enemy,
-    Player
+    Player,
+    None
 }
 
 namespace Utils

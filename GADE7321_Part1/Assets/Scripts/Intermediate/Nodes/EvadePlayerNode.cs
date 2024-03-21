@@ -39,9 +39,6 @@ namespace Task.Nodes
             {
                 return NodeState.Success;
             }
-                
-            if (HelperMethods.IsCarryFlag(agent.transform)) return NodeState.Failure;
-            
             
             evadePos = GetEvadePoint();
 

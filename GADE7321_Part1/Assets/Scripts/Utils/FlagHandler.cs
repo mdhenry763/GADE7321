@@ -28,10 +28,6 @@ public class FlagHandler : MonoBehaviour
 
     private void CheckFlagEvent(Collider other)
     {
-        if(TryGetComponent<FlagComponent>( out FlagComponent test))
-        {
-            return;
-        }
         
         if (other.TryGetComponent<FlagComponent>( out FlagComponent flag))
         {
@@ -45,12 +41,15 @@ public class FlagHandler : MonoBehaviour
             }
         }
     }
+    
+    //Test
+   
 
     private void PickUpFlag()
     {
-        FlagComponent component = transform.AddComponent<FlagComponent>();
+        FlagComponent component = GetComponent<FlagComponent>();
+        component.isHolding = true;
         component.FlagHolder = _flagHolder;
-        component.FlagParent = transform;
         _subject.NotifyObservers("Flag Pick-Up");
         
     }

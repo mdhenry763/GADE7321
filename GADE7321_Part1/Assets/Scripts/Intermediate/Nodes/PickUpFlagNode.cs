@@ -21,9 +21,8 @@ namespace Task.Nodes
         
         public override NodeState Evaluate()
         {
-            
             float distance = Vector3.Distance(enemy.position, flag.position);
-            if (!HelperMethods.IsCarryFlag(enemy))
+            if (distance > 2.5f)
             {
                 enemyAgent.SetDestination(flag.position);
                 NotifyObservers("Pick-Up Node Running");
@@ -31,9 +30,11 @@ namespace Task.Nodes
             }
             else
             {
-                NotifyObservers("Pick-Up Node Successful");
                 return NodeState.Success;
             }
+            
+            
+            
         }
     }
 }

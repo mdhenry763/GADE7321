@@ -15,22 +15,21 @@ public class Sequence : Node
     {
         bool isChildRunning = false;
         
-        foreach (var nodes in nodes)
+        foreach (var node in nodes)
         {
-            switch (nodes.Evaluate())
+            switch (node.Evaluate())
             {
                 case NodeState.Running:
                     isChildRunning = true;
-                    continue;
+                    break;
                 case NodeState.Success:
                     //Evaluate next child
-                    continue;
+                    break;
                 case NodeState.Failure:
                     _nodeState = NodeState.Failure;
                     return _nodeState;
                 default:
-                    _nodeState = NodeState.Success;
-                    return _nodeState;
+                    break;
             }
         }
 

@@ -13,10 +13,9 @@ public class Selector : Node
 
     public override NodeState Evaluate() //Iterate through all nodes
     {
-        
-        foreach (var nodes in nodes)
+        foreach (var node in nodes)
         {
-            switch (nodes.Evaluate())
+            switch (node.Evaluate())
             {
                 case NodeState.Running:
                     _nodeState = NodeState.Running;
@@ -26,11 +25,10 @@ public class Selector : Node
                     _nodeState = NodeState.Success;
                     return _nodeState;
                     //Evaluate next child
-                    break;
                 case NodeState.Failure:
-                    continue;
+                    break;
                 default:
-                    continue;
+                    break;
             }
         }
 
