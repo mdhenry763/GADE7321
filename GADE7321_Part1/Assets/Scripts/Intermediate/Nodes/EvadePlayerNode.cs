@@ -17,10 +17,8 @@ namespace Task.Nodes
         private Vector3 evadePos;
         
         public EvadePlayerNode(float strafeMultiplier, Transform player, NavMeshAgent agent, float maxDistance, 
-            Vector2 evadeMinMax)
+            Vector2 evadeMinMax, IBTObserver observer)
         {
-            
-            
             this.strafeMultiplier = strafeMultiplier;
             this.player = player;
             this.agent = agent;
@@ -29,6 +27,8 @@ namespace Task.Nodes
 
             _timer = 0;
             evadePos = GetEvadePoint();
+            AddObserver(observer);
+            NotifyObservers("Evade Player Node", AIState.Evading);
         }
 
         public override NodeState Evaluate()
@@ -43,6 +43,7 @@ namespace Task.Nodes
             evadePos = GetEvadePoint();
 
             agent.SetDestination(evadePos);
+            
             return NodeState.Running;
             
 

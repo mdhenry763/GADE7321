@@ -50,12 +50,11 @@ public class FlagHandler : MonoBehaviour
         FlagComponent component = GetComponent<FlagComponent>();
         component.isHolding = true;
         component.FlagHolder = _flagHolder;
-        _subject.NotifyObservers("Flag Pick-Up");
         
     }
 
     private void ReturnFlagToEnemyBase()
     {
-        _subject.NotifyObservers("Enemy Flag pick-up");
+        
     }
 }

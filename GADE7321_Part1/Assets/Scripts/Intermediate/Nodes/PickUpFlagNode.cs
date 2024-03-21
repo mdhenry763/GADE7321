@@ -16,6 +16,7 @@ namespace Task.Nodes
             this.enemyAgent = enemyAgent;
             this.flag = flag;
             AddObserver(ibtObserver);
+            NotifyObservers("Pick-Up Node Running", AIState.Running);
         }
         
         
@@ -25,7 +26,6 @@ namespace Task.Nodes
             if (distance > 2.5f)
             {
                 enemyAgent.SetDestination(flag.position);
-                NotifyObservers("Pick-Up Node Running");
                 return NodeState.Running;
             }
             else

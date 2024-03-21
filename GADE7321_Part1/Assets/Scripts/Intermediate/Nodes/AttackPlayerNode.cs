@@ -14,11 +14,13 @@ namespace Task.Nodes
         private float maxDistance;
 
         public AttackPlayerNode( Transform playerTransform, Transform enemyTransform,
-        float maxDistance)
+        float maxDistance, IBTObserver observer)
         {
             this.playerTransform = playerTransform;
             this.enemyTransform = enemyTransform;
             this.maxDistance = maxDistance;
+            AddObserver(observer);
+            NotifyObservers("Is Attacking", AIState.Attacking);;
         }
 
         public override NodeState Evaluate()

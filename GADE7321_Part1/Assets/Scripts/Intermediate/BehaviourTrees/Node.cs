@@ -29,7 +29,7 @@ public abstract class Node
     //Observer
     public void AddObserver(IBTObserver obs) => _subject.AddObserver(obs);
     public void RemoveObserver(IBTObserver obs) => _subject.RemoveObserver(obs);
-    protected void NotifyObservers(string msg) => _subject.NotifyObservers(msg);
+    protected void NotifyObservers(string msg, AIState state) => _subject.NotifyObservers(msg, state);
     
     public abstract NodeState Evaluate();
 }

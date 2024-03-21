@@ -4,21 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using Task.Nodes;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 public class Tree : MonoBehaviour, IBTObserver
 {
     private readonly List<Node> tree = new();
     private Node root = null;
 
+    [FormerlySerializedAs("enemyAI")]
     [Header("Enemy References: ")]
     [Space]
-    public Transform enemyAI;
+    public EnemyAI enemyAI;
+    public Transform enemyTransform;
     public NavMeshAgent enemyAgent;
     public Transform enemyFlag;
     public Transform enemyBase;
     
     [Header("Enemy Settings:")]
     [Space]
+    public float evadeDistance;
     public float nearDistance;
     public float attackDistance;
     public float strafeMultiplier;
@@ -62,13 +66,13 @@ public class Tree : MonoBehaviour, IBTObserver
         Node captureFlagDecision = new Selector(new List<Node>
         {
             BuildAttackPlayerBranch(),
-            new PickUpFlagNode(enemyAI, enemyAgent, enemyFlag, this),
+            new PickUpFlagNode(enemyTransform, enemyAgent, enemyFlag, this),
             
         });
 
         return new Sequence(new List<Node>
         {
-            new Inverter(new IsAICarryingFlagNode(enemyAI)),
+            new Inverter(new IsAICarryingFlagNode(enemyTransform)),
             captureFlagDecision
         });
         
@@ -81,15 +85,15 @@ public class Tree : MonoBehaviour, IBTObserver
         Node chasePlayer = BuildSequenceBranch(new List<Node>
         {
             new IsPlayerCarryingFlagNode(player),
-            new CheckNearNode(nearDistance, enemyBase, enemyAI),
-            new ChasePlayerNode(player, enemyAgent, attackDistance, this)
+            new CheckNearNode(nearDistance, enemyBase, enemyTransform),
+            new ChasePlayerNode(player, enemyAgent, attackDistance, enemyAI)
             
         });
 
         Node attack = BuildSequenceBranch(new List<Node>
         {
-            new CheckNearNode(nearPlayerDistance, player, enemyAI),
-            new AttackPlayerNode(player, enemyAI, attackDistance)
+            new CheckNearNode(nearPlayerDistance, player, enemyTransform),
+            new AttackPlayerNode(player, enemyTransform, attackDistance, enemyAI)
         });
         Node attackPlayer = BuildSequenceBranch(new List<Node>
         {
@@ -104,9 +108,9 @@ public class Tree : MonoBehaviour, IBTObserver
     {
         Node EvadePlayer = new Sequence(new List<Node>
         {
-            new IsAICarryingFlagNode(enemyAI),
-            new CheckNearNode(50f, player, enemyAI),
-            new EvadePlayerNode(5, player, enemyAgent, 3, randomMoveEvade)
+            new IsAICarryingFlagNode(enemyTransform),
+            new CheckNearNode(50f, player, enemyTransform),
+            new EvadePlayerNode(strafeMultiplier, player, enemyAgent, evadeDistance, randomMoveEvade, enemyAI)
         });
 
         return EvadePlayer;
@@ -118,14 +122,14 @@ public class Tree : MonoBehaviour, IBTObserver
         
         Node returnHome = BuildSequenceBranch(new List<Node>
         {
-            new IsAICarryingFlagNode(enemyAI),
+            new IsAICarryingFlagNode(enemyTransform),
             new ReturnToBaseNode(enemyBase, enemyAgent)
         });
         
         Node evadeWhenClose = new Sequence(new List<Node>
         {
-            new CheckNearNode(nearDistance, player, enemyAI),
-            new EvadePlayerNode(strafeMultiplier, player, enemyAgent, chaseDistance, randomMoveEvade)
+            new CheckNearNode(nearDistance, player, enemyTransform),
+            new EvadePlayerNode(strafeMultiplier, player, enemyAgent, chaseDistance, randomMoveEvade, enemyAI)
         });
         
         Node returnOrEvade = new Selector(new List<Node>
@@ -142,7 +146,7 @@ public class Tree : MonoBehaviour, IBTObserver
         Node resetPlayerFlag = BuildSequenceBranch(new List<Node>
         {
             new PlayerDroppedFlagNode(distanceOutBase, playerBase, playerFlag, player),
-            new PickUpFlagNode(enemyAI, enemyAgent, playerFlag, this)
+            new PickUpFlagNode(enemyTransform, enemyAgent, playerFlag, enemyAI)
             
         });
 
@@ -175,6 +179,11 @@ public class Tree : MonoBehaviour, IBTObserver
     public void OnNotify(string name)
     {
         Debug.Log($"Entering Node: {name}");
+    }
+
+    public void OnAIStateChange(AIState aiState)
+    {
+        
     }
 }
 

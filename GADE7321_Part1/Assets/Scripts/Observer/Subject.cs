@@ -16,11 +16,12 @@ public class Subject
         _observers.Remove(ibtObserver);
     }
 
-    public void NotifyObservers(string msg)
+    public void NotifyObservers(string msg, AIState state)
     {
         foreach (var observer in _observers)
         {
             observer.OnNotify(msg);
+            observer.OnAIStateChange(state);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Task.Nodes
         {
             this.baseTransform = baseTransform;
             this.agent = agent;
-            
+            NotifyObservers("Return to base", AIState.Running);
         }
 
         public override NodeState Evaluate()

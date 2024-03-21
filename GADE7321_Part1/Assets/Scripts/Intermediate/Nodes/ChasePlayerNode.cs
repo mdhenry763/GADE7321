@@ -14,8 +14,7 @@ public class ChasePlayerNode : Node
         this.target = target;
         this.agent = agent;
         this.distanceToAttack = distanceToAttack;
-        
-        
+        NotifyObservers("Chasing player", AIState.Running);
     }
 
     public override NodeState Evaluate()
