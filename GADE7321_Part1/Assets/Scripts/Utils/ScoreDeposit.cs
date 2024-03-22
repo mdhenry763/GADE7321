@@ -7,6 +7,7 @@ public class ScoreDeposit : MonoBehaviour
 {
     public int score;
     public FlagHolder flagHolder;
+    public GameHUD gameUI;
 
     private void Start()
     {
@@ -16,6 +17,15 @@ public class ScoreDeposit : MonoBehaviour
     private void IncreaseScore()
     {
         score++;
+        if (flagHolder == FlagHolder.Enemy)
+        {
+            gameUI.IncreaseRedScore(score);
+        }
+        else
+        {
+            gameUI.IncreaseBlueScore(score);
+        }
+        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,7 +35,7 @@ public class ScoreDeposit : MonoBehaviour
             if (component.FlagHolder == flagHolder)
             {
                 component.FlagHolder = FlagHolder.None;
-                component.enabled = false; 
+                component.isHolding = false;
             }
             
             

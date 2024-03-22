@@ -81,7 +81,6 @@ public class Tree : MonoBehaviour, IBTObserver
     
     private Node BuildAttackPlayerBranch()
     {
-        Debug.Log("Attack Player");
         Node chasePlayer = BuildSequenceBranch(new List<Node>
         {
             new IsPlayerCarryingFlagNode(player),
@@ -128,6 +127,7 @@ public class Tree : MonoBehaviour, IBTObserver
         
         Node evadeWhenClose = new Sequence(new List<Node>
         {
+            new IsAICarryingFlagNode(enemyTransform),
             new CheckNearNode(nearDistance, player, enemyTransform),
             new EvadePlayerNode(strafeMultiplier, player, enemyAgent, chaseDistance, randomMoveEvade, enemyAI)
         });
