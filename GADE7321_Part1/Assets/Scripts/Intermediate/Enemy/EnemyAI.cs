@@ -28,9 +28,16 @@ public class EnemyAI : MonoBehaviour, IBTObserver
         Debug.Log("message: " + msg);
     }
 
+    private void Update()
+    {
+        if (currentPlayerState == AIState.Attacking)
+        {
+            //Use a sphere cast
+        }
+    }
+
     public void OnAIStateChange(AIState state)
     {
-        Debug.Log("!!!State Changed!!!");
         if(state == currentPlayerState) return;
         
         AIAnim.PlayAttackingAnim(false);
@@ -55,6 +62,8 @@ public class EnemyAI : MonoBehaviour, IBTObserver
                 AIAnim.PlayRunningAnim(0);
               break;  
         }
+        
+        Debug.Log($"!!!State Changed - to - {state}!!!");
     }
 }
 

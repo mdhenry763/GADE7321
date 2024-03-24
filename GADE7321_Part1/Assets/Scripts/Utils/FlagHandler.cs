@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Utils;
 
 public class FlagHandler : MonoBehaviour
 {
-    public FlagHolder _flagHolder;
+    public FlagHolder flagHolder;
+    public GameObject flagVisual;
+    public Respawner flagSpawner;
 
     private Subject _subject;
 
@@ -31,15 +34,20 @@ public class FlagHandler : MonoBehaviour
         
         if (other.TryGetComponent<FlagComponent>( out FlagComponent flag))
         {
-            if (flag.FlagHolder == _flagHolder)
+            if (flag.FlagHolder == flagHolder)
             {
                 PickUpFlag();
             }
-            else
+        }
+
+        if (other.TryGetComponent<ScoreDeposit>(out var scoreDepo))
+        {
+            if (scoreDepo.flagHolder == flagHolder)
             {
-                ReturnFlagToEnemyBase();
+                flagVisual.SetActive(false);
             }
         }
+        
     }
     
     //Test
@@ -49,12 +57,12 @@ public class FlagHandler : MonoBehaviour
     {
         FlagComponent component = GetComponent<FlagComponent>();
         component.isHolding = true;
-        component.FlagHolder = _flagHolder;
+        component.FlagHolder = flagHolder;
+        flagVisual.SetActive(true);
         
+        var isPlayer = flagHolder == FlagHolder.Player;
+        flagSpawner.SpawnFlag(false, isPlayer);
     }
 
-    private void ReturnFlagToEnemyBase()
-    {
-        
-    }
+   
 }
