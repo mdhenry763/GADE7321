@@ -22,6 +22,7 @@ namespace Task.Nodes
         
         public override NodeState Evaluate()
         {
+            NotifyObservers("Pick-Up Node Running", AIState.Running);
             float distance = Vector3.Distance(enemy.position, flag.position);
             if (distance > 2.5f)
             {

@@ -1,12 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Utils;
 
 public class ScoreDeposit : MonoBehaviour
 {
     public int score;
+
+    [Header("Game End")] 
+    public GameObject gameEndScreen;
+
+    public TMP_Text gameEndText;
+    
+    
+    [Header("References: ")]
     public FlagHolder flagHolder;
     public GameHUD gameUI;
     public Respawner flagSpawner;
@@ -27,6 +36,13 @@ public class ScoreDeposit : MonoBehaviour
         {
             gameUI.IncreaseBlueScore(score);
         }
+
+        if (score >= 5)
+        {
+            gameEndScreen.SetActive(true);
+            gameEndText.text = $"Winner: {flagHolder.ToString()}";
+            Time.timeScale = 0;
+        }
         
     }
 
@@ -39,8 +55,11 @@ public class ScoreDeposit : MonoBehaviour
                 component.FlagHolder = FlagHolder.None;
                 component.isHolding = false;
                 IncreaseScore();
+                
                 var isPlayer = flagHolder == FlagHolder.Player;
-                flagSpawner.SpawnFlag(true, isPlayer);
+                var trans = isPlayer ? flagSpawner.playerFlagSpawn : flagSpawner.enemyFlagSpawn;
+                
+                flagSpawner.SpawnFlag(true, isPlayer,trans.position );
             }
             
             

@@ -20,11 +20,11 @@ namespace Task.Nodes
             this.enemyTransform = enemyTransform;
             this.maxDistance = maxDistance;
             AddObserver(observer);
-            NotifyObservers("Is Attacking", AIState.Attacking);;
         }
 
         public override NodeState Evaluate()
         {
+            NotifyObservers("Is Attacking", AIState.Attacking);;
             Debug.Log("Attack Player");
             
             if (HelperMethods.IsDistanceLessThan(playerTransform, enemyTransform, maxDistance))

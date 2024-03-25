@@ -28,13 +28,11 @@ namespace Task.Nodes
             _timer = 0;
             evadePos = GetEvadePoint();
             AddObserver(observer);
-            NotifyObservers("Evade Player Node", AIState.Evading);
         }
 
         public override NodeState Evaluate()
         {
-            
-            Debug.Log("Evade Player Node");
+            NotifyObservers("Evade Player Node", AIState.Evading);
             if (!HelperMethods.IsDistanceLessThan(player, agent.transform, maxDistance))
             {
                 return NodeState.Success;
@@ -56,7 +54,7 @@ namespace Task.Nodes
             Vector3 direction = player.position - agent.transform.position;
             direction.Normalize();
             //Move the enemy away from player in this direction
-            evadePos = direction * strafeMultiplier;
+            evadePos = -direction * strafeMultiplier;
             if (!agent.CalculatePath(evadePos, agent.path))
             {
                 evadePos += new Vector3(Random.Range(evadeMinMax.x, evadeMinMax.y), 0, Random.Range(evadeMinMax.x, evadeMinMax.y));

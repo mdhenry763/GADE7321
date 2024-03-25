@@ -23,35 +23,38 @@ public class PlayerMovement : MonoBehaviour
     [Header("Settings: ")] 
     public float turnRate = 45;
     public float playerSpeed = 7;
-    
-    
-    private Controls playerActions;
+
+    private Attack _attack;
+    private Controls _playerActions;
     private PlayerMovementState _playerMovementState;
     
     private void Awake()
     {
-        if (playerActions == null)
+        if (_playerActions == null)
         {
-            playerActions = new Controls();
+            _playerActions = new Controls();
         }
+
+        _attack = GetComponent<Attack>();
     }
 
     private void OnEnable()
     {
-        playerActions.Player.Enable();
-        playerActions.Player.Fire.performed += HandlePunch;
+        _playerActions.Player.Enable();
+        _playerActions.Player.Fire.performed += HandlePunch;
     }
 
     private void HandlePunch(InputAction.CallbackContext obj)
     {
         _playerMovementState = PlayerMovementState.Attacking;
+        _attack.AttackOpponent();
         animControl.PunchAnim();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 input = playerActions.Player.Move.ReadValue<Vector2>();
+        Vector2 input = _playerActions.Player.Move.ReadValue<Vector2>();
         MovePlayer(input);
         RotatePlayer(input);
     }
@@ -78,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
     void RotatePlayer(Vector2 input)
     {
         Vector3 moveDir = new Vector3(0, input.x, 0);
-        transform.Rotate(moveDir * turnRate);
+        transform.Rotate(moveDir * turnRate * Time.deltaTime);
     }
     
 }

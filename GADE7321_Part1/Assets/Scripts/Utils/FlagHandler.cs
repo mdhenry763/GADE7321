@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using Utils;
 
 public class FlagHandler : MonoBehaviour
 {
+    public GameObject flagPrefab;
     public FlagHolder flagHolder;
     public GameObject flagVisual;
     public Respawner flagSpawner;
@@ -38,6 +40,10 @@ public class FlagHandler : MonoBehaviour
             {
                 PickUpFlag();
             }
+            else
+            {
+                PickUpOpponentFlag(flag);
+            }
         }
 
         if (other.TryGetComponent<ScoreDeposit>(out var scoreDepo))
@@ -49,8 +55,13 @@ public class FlagHandler : MonoBehaviour
         }
         
     }
-    
-    //Test
+
+    private void PickUpOpponentFlag(FlagComponent comp)
+    {
+        var isPlayer = FlagHolder.Player == comp.FlagHolder;
+        var trans = isPlayer ? flagSpawner.playerFlagSpawn : flagSpawner.enemyFlagSpawn;
+        flagSpawner.SpawnFlag(true, isPlayer, trans.position);
+    }
    
 
     private void PickUpFlag()
@@ -61,8 +72,56 @@ public class FlagHandler : MonoBehaviour
         flagVisual.SetActive(true);
         
         var isPlayer = flagHolder == FlagHolder.Player;
-        flagSpawner.SpawnFlag(false, isPlayer);
+        var trans = isPlayer ? flagSpawner.playerFlagSpawn : flagSpawner.enemyFlagSpawn;
+        flagSpawner.SpawnFlag(false, isPlayer, trans.position);
     }
+
+    public void DropFlag(Vector3 direction, float power)
+    {
+        FlagComponent component = GetComponent<FlagComponent>();
+        component.isHolding = false;
+        
+        flagVisual.SetActive(false);
+        Vector3 newPos = GetRandomPos(direction, power);
+        
+        var isPlayer = flagHolder == FlagHolder.Player;
+        flagSpawner.SpawnFlag(true, isPlayer, newPos);
+    }
+
+    private Vector3 GetRandomPos(Vector3 direction, float power)
+    {
+        Vector3[] directions = new Vector3[]
+        {
+            new Vector3(-direction.z, direction.y, direction.x), //Left
+            new Vector3(direction.z, direction.y, -direction.x) , //right
+            direction.normalized, 
+            -direction.normalized, //Right
+        };
+
+        bool foundPosition = false;
+        Vector3 dropPosition = Vector3.zero;
+
+        foreach (Vector3 dir in directions)
+        {
+            Vector3 attemptPosition = transform.position + (dir * power);
+            if (NavMesh.SamplePosition(attemptPosition, out NavMeshHit hit, power, NavMesh.AllAreas))
+            {
+                dropPosition = hit.position;
+                foundPosition = true;
+                break; 
+            }
+        }
+
+        if (!foundPosition)
+        {
+            Debug.LogWarning("No valid NavMesh position found in any direction. Dropping at player's current position.");
+            dropPosition = transform.position; 
+        }
+
+        return dropPosition;
+
+    }
+    
 
    
 }

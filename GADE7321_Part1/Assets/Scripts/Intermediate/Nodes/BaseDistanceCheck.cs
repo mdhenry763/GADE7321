@@ -3,17 +3,17 @@ using Utils;
 
 namespace Task.Nodes
 {
-    public class PlayerDroppedFlagNode : Node
+    public class BaseDistanceCheck : Node
     {
         private float distance;
-        private Transform playerBase;
+        private Transform enemyBase;
         private Transform playerFlag;
         private Transform player;
 
-        public PlayerDroppedFlagNode(float distance, Transform playerBase, Transform playerFlag, Transform player)
+        public BaseDistanceCheck(float distance, Transform enemyBase, Transform playerFlag, Transform player)
         {
             this.distance = distance;
-            this.playerBase = playerBase;
+            this.enemyBase = enemyBase;
             this.playerFlag = playerFlag;
             this.player = player;
             
@@ -23,17 +23,15 @@ namespace Task.Nodes
         public override NodeState Evaluate()
         {
             Debug.Log("Is Dropped Flag");
-            if (HelperMethods.IsDistanceLessThan(playerBase, playerFlag, distance)) 
+            //Distance check to see if flag is still in base
+            if (HelperMethods.IsDistanceLessThan(enemyBase, playerFlag, distance)) 
                 return NodeState.Failure;
             else
             {
-                if (HelperMethods.IsCarryFlag(player))
-                {
-                    return NodeState.Success;
-                }
-
-                return NodeState.Failure;
+                return NodeState.Success;
             }
+            
+            
 
         }
     }

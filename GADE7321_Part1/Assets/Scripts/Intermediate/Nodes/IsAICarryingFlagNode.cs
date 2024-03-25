@@ -22,7 +22,6 @@ public class IsAICarryingFlagNode : Node
         }
         else
         {
-            Debug.Log("Is Carrying Flag Failure");
             return NodeState.Failure;
         }
         

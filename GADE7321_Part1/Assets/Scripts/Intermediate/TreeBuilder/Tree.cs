@@ -66,7 +66,9 @@ public class Tree : MonoBehaviour, IBTObserver
         Node captureFlagDecision = new Selector(new List<Node>
         {
             BuildAttackPlayerBranch(),
-            new PickUpFlagNode(enemyTransform, enemyAgent, enemyFlag, this),
+            BuildResetOpponentFlagBranch(),
+            new PickUpFlagNode(enemyTransform, enemyAgent, enemyFlag, enemyAI),
+            
             
         });
 
@@ -81,26 +83,16 @@ public class Tree : MonoBehaviour, IBTObserver
     
     private Node BuildAttackPlayerBranch()
     {
-        Node chasePlayer = BuildSequenceBranch(new List<Node>
-        {
-            new IsPlayerCarryingFlagNode(player),
-            new CheckNearNode(nearDistance, enemyBase, enemyTransform),
-            new ChasePlayerNode(player, enemyAgent, attackDistance, enemyAI)
-            
-        });
 
         Node attack = BuildSequenceBranch(new List<Node>
         {
-            new CheckNearNode(nearPlayerDistance, player, enemyTransform),
+            //new CheckNearNode(nearPlayerDistance, player, enemyTransform),
+            new IsPlayerCarryingFlagNode(player),
+            new ChasePlayerNode(player, enemyAgent, attackDistance, enemyAI),
             new AttackPlayerNode(player, enemyTransform, attackDistance, enemyAI)
         });
-        Node attackPlayer = BuildSequenceBranch(new List<Node>
-        {
-            chasePlayer,
-            attack
-        });
 
-        return attackPlayer;
+        return attack;
     }
 
     private Node BuildEvadePlayerBranch()
@@ -108,7 +100,7 @@ public class Tree : MonoBehaviour, IBTObserver
         Node EvadePlayer = new Sequence(new List<Node>
         {
             new IsAICarryingFlagNode(enemyTransform),
-            new CheckNearNode(50f, player, enemyTransform),
+            new CheckNearNode(nearDistance, player, enemyTransform),
             new EvadePlayerNode(strafeMultiplier, player, enemyAgent, evadeDistance, randomMoveEvade, enemyAI)
         });
 
@@ -122,7 +114,7 @@ public class Tree : MonoBehaviour, IBTObserver
         Node returnHome = BuildSequenceBranch(new List<Node>
         {
             new IsAICarryingFlagNode(enemyTransform),
-            new ReturnToBaseNode(enemyBase, enemyAgent)
+            new ReturnToBaseNode(enemyBase, enemyAgent, enemyAI)
         });
         
         Node evadeWhenClose = new Sequence(new List<Node>
@@ -141,11 +133,12 @@ public class Tree : MonoBehaviour, IBTObserver
         return returnOrEvade;
     }
     
-    private Node ResetOpponentFlag()
+    private Node BuildResetOpponentFlagBranch()
     {
         Node resetPlayerFlag = BuildSequenceBranch(new List<Node>
         {
-            new PlayerDroppedFlagNode(distanceOutBase, playerBase, playerFlag, player),
+            new Inverter(new IsPlayerCarryingFlagNode(player)),
+            new BaseDistanceCheck(distanceOutBase, enemyBase, playerFlag, player),
             new PickUpFlagNode(enemyTransform, enemyAgent, playerFlag, enemyAI)
             
         });
@@ -168,6 +161,7 @@ public class Tree : MonoBehaviour, IBTObserver
             evadePlayer,
             captureFlag,
             attackPlayer,
+            resetPlayerFlag,
         });
     }
 
