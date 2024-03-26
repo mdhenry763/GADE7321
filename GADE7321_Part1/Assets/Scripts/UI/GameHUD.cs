@@ -15,14 +15,14 @@ public class GameHUD : MonoBehaviour
     private void Start()
     {
         round++;
-        StartCoroutine(ShowRoundText());
+        StartCoroutine(ShowRoundText(""));
     }
 
     public void IncreaseRedScore(int score)
     {
         redScoreText.text = score.ToString();
         round++;
-        StartCoroutine(ShowRoundText());
+        StartCoroutine(ShowRoundText("Red"));
 
     }
 
@@ -30,14 +30,20 @@ public class GameHUD : MonoBehaviour
     {
         blueScoreText.text = score.ToString();
         round++;
-        StartCoroutine(ShowRoundText());
+        StartCoroutine(ShowRoundText("Blue"));
     }
 
-    IEnumerator ShowRoundText()
+    IEnumerator ShowRoundText(string winner)
     {
         if (round == 5) yield return null;
         
         WaitForSeconds wait = new WaitForSeconds(3f);
+        if (winner != string.Empty)
+        {
+            roundText.text = $"Winner: {winner}";
+        }
+
+        yield return new WaitForSeconds(1.5f);
         roundText.text = $"Round: {round}";
         yield return wait;
         roundText.text = $"";

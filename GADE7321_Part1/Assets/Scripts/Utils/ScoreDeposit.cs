@@ -33,10 +33,12 @@ public class ScoreDeposit : MonoBehaviour
         if (flagHolder == FlagHolder.Enemy)
         {
             gameUI.IncreaseRedScore(score);
+            OnScored?.Invoke();
         }
         else
         {
             gameUI.IncreaseBlueScore(score);
+            OnScored?.Invoke();
         }
 
         if (score >= 5)
@@ -45,12 +47,6 @@ public class ScoreDeposit : MonoBehaviour
             gameEndText.text = $"Winner: {flagHolder.ToString()}";
             Time.timeScale = 0;
         }
-        else
-        {
-            
-            OnScored?.Invoke();
-        }
-        
     }
 
     private void OnTriggerEnter(Collider other)

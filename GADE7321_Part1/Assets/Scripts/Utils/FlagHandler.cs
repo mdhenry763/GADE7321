@@ -14,7 +14,12 @@ public class FlagHandler : MonoBehaviour
     public Respawner flagSpawner;
     
     private FlagComponent _flagComp;
-    
+
+    private void Start()
+    {
+        _flagComp = GetComponent<FlagComponent>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         CheckFlagEvent(other);

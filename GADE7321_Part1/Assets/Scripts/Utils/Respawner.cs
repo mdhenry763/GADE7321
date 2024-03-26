@@ -38,6 +38,11 @@ namespace Utils
             //Respawn players between rounds
             player.position = playerSpawn.position;
             enemy.position = enemySpawn.position;
+            
+            SpawnFlag(true, true, playerFlagSpawn.position);
+            SpawnFlag(true, false, enemyFlagSpawn.position);
+            
+            Reset();
         }
 
         private void Reset()
