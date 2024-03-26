@@ -5,6 +5,12 @@ using UnityEngine;
 public class Selector : Node
 {
     protected List<Node> nodes = new();
+    
+    /// <summary>
+    /// Selector
+    /// If a child behaviour succeeds then the Selector succeeds
+    /// </summary>
+    /// <param name="nodes"></param>
 
     public Selector(List<Node> nodes)
     {

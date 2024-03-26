@@ -6,12 +6,12 @@ using Task.Nodes;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 
-public class Tree : MonoBehaviour, IBTObserver
+public class TreeBuilder : MonoBehaviour, IBTObserver //Tree building class
 {
     private readonly List<Node> tree = new();
     private Node root = null;
-
-    [FormerlySerializedAs("enemyAI")]
+    
+    //Setting up Enemy 
     [Header("Enemy References: ")]
     [Space]
     public EnemyAI enemyAI;
@@ -29,6 +29,7 @@ public class Tree : MonoBehaviour, IBTObserver
     public float chaseDistance;
     public Vector2 randomMoveEvade = new Vector2(-20, 20);
 
+    //Setting up Player
     [Header("Player References:")]
     [Space]
     public Transform playerFlag;
@@ -44,8 +45,8 @@ public class Tree : MonoBehaviour, IBTObserver
     {
         BuildTree();
     }
-    
 
+    //Helper method for building a sequence
     public Node BuildSequenceBranch(List<Node> children)
     {
         Node sequence = new Sequence(children);
@@ -53,6 +54,7 @@ public class Tree : MonoBehaviour, IBTObserver
         return sequence;
     }
 
+    //Helper method for building a Selector
     public Node BuildSelectorBranch(List<Node> children)
     {
         Node selector = new Selector(children);
@@ -60,16 +62,17 @@ public class Tree : MonoBehaviour, IBTObserver
         return selector;
     }
 
+    //Helper methods for branch building
+    #region Branch Builder
     //Capture Flag
     private Node BuildCaptureFlagBranch()
     {
         Node captureFlagDecision = new Selector(new List<Node>
         {
-            BuildAttackPlayerBranch(),
+            //On way to capture flag Check if should attack or reset opponents flag
+            BuildAttackPlayerBranch(), 
             BuildResetOpponentFlagBranch(),
             new PickUpFlagNode(enemyTransform, enemyAgent, enemyFlag, enemyAI),
-            
-            
         });
 
         return new Sequence(new List<Node>
@@ -86,7 +89,7 @@ public class Tree : MonoBehaviour, IBTObserver
 
         Node attack = BuildSequenceBranch(new List<Node>
         {
-            //new CheckNearNode(nearPlayerDistance, player, enemyTransform),
+            //Attack player if they have a flag, and they are not out of range
             new IsPlayerCarryingFlagNode(player),
             new ChasePlayerNode(player, enemyAgent, attackDistance, enemyAI),
             new AttackPlayerNode(player, enemyTransform, attackDistance, enemyAI)
@@ -99,6 +102,7 @@ public class Tree : MonoBehaviour, IBTObserver
     {
         Node EvadePlayer = new Sequence(new List<Node>
         {
+            //If AI is carrying flag Evade player if they are near
             new IsAICarryingFlagNode(enemyTransform),
             new CheckNearNode(nearDistance, player, enemyTransform),
             new EvadePlayerNode(strafeMultiplier, player, enemyAgent, evadeDistance, randomMoveEvade, enemyAI)
@@ -108,17 +112,18 @@ public class Tree : MonoBehaviour, IBTObserver
     }
     
     
-    private Node BuildReturnHomeBranch()
+    private Node BuildReturnHomeBranch() //Most important branch as it leads to a point for AI
     {
-        
         Node returnHome = BuildSequenceBranch(new List<Node>
         {
+            //If carrying flag the return home
             new IsAICarryingFlagNode(enemyTransform),
             new ReturnToBaseNode(enemyBase, enemyAgent, enemyAI)
         });
         
         Node evadeWhenClose = new Sequence(new List<Node>
         {
+            //Evade player when returning home, to not lose the flag
             new IsAICarryingFlagNode(enemyTransform),
             new CheckNearNode(nearDistance, player, enemyTransform),
             new EvadePlayerNode(strafeMultiplier, player, enemyAgent, chaseDistance, randomMoveEvade, enemyAI)
@@ -133,7 +138,7 @@ public class Tree : MonoBehaviour, IBTObserver
         return returnOrEvade;
     }
     
-    private Node BuildResetOpponentFlagBranch()
+    private Node BuildResetOpponentFlagBranch() //Reset Opponents Flag when they do not have it and it is outside their base
     {
         Node resetPlayerFlag = BuildSequenceBranch(new List<Node>
         {
@@ -145,6 +150,8 @@ public class Tree : MonoBehaviour, IBTObserver
 
         return resetPlayerFlag;
     }
+    
+    #endregion
 
     private void BuildTree()
     {
@@ -153,9 +160,8 @@ public class Tree : MonoBehaviour, IBTObserver
         var returnToBase = BuildReturnHomeBranch();
         var resetPlayerFlag = BuildReturnHomeBranch();
         var evadePlayer = BuildEvadePlayerBranch();
-        //Node top = BuildSequenceBranch()
 
-        root = new Selector(new List<Node>
+        root = new Selector(new List<Node> //Root node as a selector to dynamically choose a behaviour every Frame
         {
             returnToBase,
             evadePlayer,
@@ -167,7 +173,7 @@ public class Tree : MonoBehaviour, IBTObserver
 
     private void Update()
     {
-        root.Evaluate();
+        root.Evaluate(); //Evaluate the root node every frame
     }
 
     public void OnNotify(string name)

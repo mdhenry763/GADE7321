@@ -6,6 +6,11 @@ public class Sequence : Node
 {
     protected List<Node> nodes = new();
 
+    /// <summary>
+    /// Sequence
+    /// Succeeds if all child behaviours succeed
+    /// </summary>
+    /// <param name="nodes"></param>
     public Sequence(List<Node> nodes)
     {
         this.nodes = nodes;

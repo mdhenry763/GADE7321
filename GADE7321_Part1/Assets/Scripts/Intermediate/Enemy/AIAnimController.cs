@@ -6,17 +6,17 @@ namespace Intermediate.Enemy
     {
         public Animator animController;
 
-        public void PlayRunningAnim(float speed)
+        public void PlayRunningAnim(float speed) //Play run anim
         {
             animController.SetFloat("Speed", speed);
         }
 
-        public void PlayAttackingAnim(bool isPunching)
+        public void PlayAttackingAnim(bool isPunching) //Play punch anim
         {
             animController.SetBool("IsPunching", isPunching);
         }
 
-        public void PlayEvadeAnim(bool isSprinting)
+        public void PlayEvadeAnim(bool isSprinting) //Play sprint anim
         {
             animController.SetBool("IsSprinting", isSprinting);
         }

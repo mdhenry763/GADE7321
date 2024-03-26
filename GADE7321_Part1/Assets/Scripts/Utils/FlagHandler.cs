@@ -12,15 +12,9 @@ public class FlagHandler : MonoBehaviour
     public FlagHolder flagHolder;
     public GameObject flagVisual;
     public Respawner flagSpawner;
-
-    private Subject _subject;
-
-    private void Start()
-    {
-        _subject = new Subject();
-    }
-
-
+    
+    private FlagComponent _flagComp;
+    
     private void OnTriggerEnter(Collider other)
     {
         CheckFlagEvent(other);
@@ -31,9 +25,9 @@ public class FlagHandler : MonoBehaviour
         CheckFlagEvent(other.collider);
     }
 
-    private void CheckFlagEvent(Collider other)
+    private void CheckFlagEvent(Collider other) //Check to see if Entity is picking up their flag or depositing flag
     {
-        
+        //Flag Pick Up Check
         if (other.TryGetComponent<FlagComponent>( out FlagComponent flag))
         {
             if (flag.FlagHolder == flagHolder)
@@ -45,7 +39,7 @@ public class FlagHandler : MonoBehaviour
                 PickUpOpponentFlag(flag);
             }
         }
-
+        //Flag Drop check
         if (other.TryGetComponent<ScoreDeposit>(out var scoreDepo))
         {
             if (scoreDepo.flagHolder == flagHolder)
@@ -56,6 +50,7 @@ public class FlagHandler : MonoBehaviour
         
     }
 
+    //Reset opponents flag if picked up
     private void PickUpOpponentFlag(FlagComponent comp)
     {
         var isPlayer = FlagHolder.Player == comp.FlagHolder;
@@ -90,6 +85,7 @@ public class FlagHandler : MonoBehaviour
 
     private Vector3 GetRandomPos(Vector3 direction, float power)
     {
+        //Get right, left, forward and backwards direction from direction
         Vector3[] directions = new Vector3[]
         {
             new Vector3(-direction.z, direction.y, direction.x), //Left
@@ -101,7 +97,7 @@ public class FlagHandler : MonoBehaviour
         bool foundPosition = false;
         Vector3 dropPosition = Vector3.zero;
 
-        foreach (Vector3 dir in directions)
+        foreach (Vector3 dir in directions) //Try find a suitable position if not drop flag at entities feet
         {
             Vector3 attemptPosition = transform.position + (dir * power);
             if (NavMesh.SamplePosition(attemptPosition, out NavMeshHit hit, power, NavMesh.AllAreas))
@@ -114,12 +110,18 @@ public class FlagHandler : MonoBehaviour
 
         if (!foundPosition)
         {
-            Debug.LogWarning("No valid NavMesh position found in any direction. Dropping at player's current position.");
+            Debug.LogWarning("No valid NavMesh position found in any direction, Dropping at player's current position.");
             dropPosition = transform.position; 
         }
 
-        return dropPosition;
+        return dropPosition; //Return the drop position
 
+    }
+
+    public void ResetEntity()
+    {
+        _flagComp.isHolding = false;
+        flagVisual.SetActive(false);
     }
     
 

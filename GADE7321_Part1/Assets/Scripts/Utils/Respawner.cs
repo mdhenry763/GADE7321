@@ -1,40 +1,70 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Utils
 {
-    public class Respawner : MonoBehaviour
+    public class Respawner : MonoBehaviour //Flag Respawner and player respanwer
     {
-        [SerializeField] private GameObject _playerFlag;
-        [SerializeField] private GameObject _enemyFlag;
-        [SerializeField] private Transform playerSpawn;
-        [SerializeField] private Transform enemySpawn;
-        
+        [Header("Spawn References:")]
         public Transform playerFlagSpawn;
         public Transform enemyFlagSpawn;
         
-
+        [SerializeField] private GameObject playerFlag;
+        [SerializeField] private GameObject enemyFlag;
+ 
+        
+        [Header("Entity References:")]
+        [SerializeField] Transform player;
+        [SerializeField] Transform enemy;
+        [SerializeField] private Transform playerSpawn;
+        [SerializeField] private Transform enemySpawn;
+        
+        
         private void Start()
         {
+            //Spawn flags on game start
             SpawnFlag(true, true, playerFlagSpawn.position);
             SpawnFlag(true, false, enemyFlagSpawn.position);
+            
+            //Subscription
+            ScoreDeposit.OnScored += RespawnPlayers;
+
         }
 
-        public void SpawnFlag(bool spawn,bool isPlayer, Vector3 pos)
+        private void RespawnPlayers()
+        {
+            //Respawn players between rounds
+            player.position = playerSpawn.position;
+            enemy.position = enemySpawn.position;
+        }
+
+        private void Reset()
+        {
+            //Reset players after respawn
+            FlagHandler playerHandler = player.GetComponent<FlagHandler>();
+            FlagHandler enemyHandler = enemy.GetComponent<FlagHandler>();
+            playerHandler.ResetEntity();
+            enemyHandler.ResetEntity();
+        }
+
+        public void SpawnFlag(bool spawn,bool isPlayer, Vector3 pos) //Spawn or despawn flag based on isPlayer and use a position
         {
             if (isPlayer != true)
             {
-                _enemyFlag.transform.position = pos;
-                _enemyFlag.SetActive(spawn);
+                enemyFlag.transform.position = pos;
+                enemyFlag.SetActive(spawn);
             }
 
             else
             {
-                _playerFlag.transform.position = pos;
-                _playerFlag.SetActive(spawn);
+                playerFlag.transform.position = pos;
+                playerFlag.SetActive(spawn);
             }
         }
+        
+        
         
         
     }

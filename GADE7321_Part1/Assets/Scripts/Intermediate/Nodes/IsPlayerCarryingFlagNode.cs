@@ -11,7 +11,7 @@ public class IsPlayerCarryingFlagNode : Node
         
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate() //Check if player is carrying flag
     {
         Debug.Log("Is Player Carrying Flag");
         

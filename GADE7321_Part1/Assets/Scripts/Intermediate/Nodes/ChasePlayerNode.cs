@@ -23,12 +23,12 @@ public class ChasePlayerNode : Node
         NotifyObservers("Chasing player", AIState.Running);
         
         float distance = Vector3.Distance(target.position, agent.transform.position);
-        if (distance > maxChaseDistance)
+        if (distance > maxChaseDistance) //if outside of chase distance fail
         {
             return NodeState.Failure;
         }
         
-        if(distance > distanceToAttack)
+        if(distance > distanceToAttack) //Chase player until within attacking distance
         {
             agent.SetDestination(target.position);
             return NodeState.Running;
@@ -37,11 +37,5 @@ public class ChasePlayerNode : Node
         {
             return NodeState.Success;
         }
-
-        if (agent.remainingDistance <= distanceToAttack)
-        {
-            return NodeState.Success;
-        }
-       
     }
 }

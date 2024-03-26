@@ -23,11 +23,13 @@ public class Attack : MonoBehaviour
 
     public void AttackOpponent()
     {
+        //Play Punch sound
         if(!audio.isPlaying)
             audio.PlayOneShot(clip);
 
+        //Attack is distance based, almost like a radius
         float distance = Vector3.Distance(transform.position, opponent.position);
-        if (distance <= attackDistance)
+        if (distance <= attackDistance) //Entity will drop their flag if they were within a certain distance
         {
             FlagHandler flagHandler = opponent.GetComponent<FlagHandler>();
             var flagComponent = opponent.GetComponent<FlagComponent>();

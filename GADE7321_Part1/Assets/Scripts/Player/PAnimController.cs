@@ -10,12 +10,12 @@ namespace Player
         public string fightingAnim;
         public string runAnim;
 
-        public void RunAnim(float speed)
+        public void RunAnim(float speed) //Play Run ANim
         {
             anim.SetFloat(runAnim, speed);
         }
 
-        public void PunchAnim()
+        public void PunchAnim() //Play Punch Anim
         {
             anim.SetTrigger(fightingAnim);
         }

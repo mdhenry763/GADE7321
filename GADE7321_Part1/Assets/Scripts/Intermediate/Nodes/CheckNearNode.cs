@@ -18,7 +18,7 @@ public class CheckNearNode : Node
     }
     
     
-    public override NodeState Evaluate()
+    public override NodeState Evaluate() //Check if object is near
     {
         Debug.Log("Check Near Node");
         

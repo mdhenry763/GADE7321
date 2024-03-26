@@ -22,7 +22,7 @@ namespace Task.Nodes
             AddObserver(observer);
         }
 
-        public override NodeState Evaluate()
+        public override NodeState Evaluate() //Attack player if distance is less than maxDistance and if the player is carrying flag
         {
             NotifyObservers("Is Attacking", AIState.Attacking);;
             Debug.Log("Attack Player");

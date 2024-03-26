@@ -20,11 +20,11 @@ namespace Task.Nodes
         }
         
         
-        public override NodeState Evaluate()
+        public override NodeState Evaluate() //Run towards flag while distance is greater than 1.5f, hits collider of flag
         {
             NotifyObservers("Pick-Up Node Running", AIState.Running);
             float distance = Vector3.Distance(enemy.position, flag.position);
-            if (distance > 2.5f)
+            if (distance > 1.5f)
             {
                 enemyAgent.SetDestination(flag.position);
                 return NodeState.Running;

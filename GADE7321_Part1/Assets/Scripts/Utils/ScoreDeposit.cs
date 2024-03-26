@@ -11,7 +11,6 @@ public class ScoreDeposit : MonoBehaviour
 
     [Header("Game End")] 
     public GameObject gameEndScreen;
-
     public TMP_Text gameEndText;
     
     
@@ -19,6 +18,9 @@ public class ScoreDeposit : MonoBehaviour
     public FlagHolder flagHolder;
     public GameHUD gameUI;
     public Respawner flagSpawner;
+    
+    //Events
+    public static event Action OnScored;
 
     private void Start()
     {
@@ -42,6 +44,11 @@ public class ScoreDeposit : MonoBehaviour
             gameEndScreen.SetActive(true);
             gameEndText.text = $"Winner: {flagHolder.ToString()}";
             Time.timeScale = 0;
+        }
+        else
+        {
+            
+            OnScored?.Invoke();
         }
         
     }

@@ -37,10 +37,11 @@ public class EnemyAI : MonoBehaviour, IBTObserver
         }
     }
 
-    public void OnAIStateChange(AIState state)
+    public void OnAIStateChange(AIState state) //Perform various actions based one enemy state
     {
         if(state == currentPlayerState) return;
         
+        //Reset animations
         AIAnim.PlayAttackingAnim(false);
         AIAnim.PlayEvadeAnim(false);
         AIAnim.PlayRunningAnim(0);
@@ -48,7 +49,7 @@ public class EnemyAI : MonoBehaviour, IBTObserver
         
         currentPlayerState = state;
 
-        switch (state)
+        switch (state) //state based animations
         {
             case AIState.Attacking:
                 AIAnim.PlayAttackingAnim(true);

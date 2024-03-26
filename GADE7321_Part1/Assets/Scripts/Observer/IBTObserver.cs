@@ -1,8 +1,8 @@
-public interface IBTObserver
+public interface IBTObserver //Interface for observer
 {
     void OnNotify(string nodeName);
 
-    void OnAIStateChange(AIState aiState);
+    void OnAIStateChange(AIState aiState); 
 }
 
 public interface IEntityObservers

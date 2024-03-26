@@ -16,15 +16,14 @@ namespace Task.Nodes
             AddObserver(observer);
         }
 
-        public override NodeState Evaluate()
+        public override NodeState Evaluate() //Run towards base until distance is than agent stopping distance
         {
             Debug.Log("Return to base Node");
-            agent.SetDestination(baseTransform.position);
+            agent.SetDestination(baseTransform.position); 
             NotifyObservers("Return to base", AIState.Running);
             
             if (HelperMethods.IsDistanceLessThan(agent.transform, baseTransform, agent.stoppingDistance))
             {
-                
                 return NodeState.Success;
             }
             else return NodeState.Running;

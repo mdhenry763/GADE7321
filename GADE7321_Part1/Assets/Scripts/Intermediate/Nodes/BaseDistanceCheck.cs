@@ -20,7 +20,7 @@ namespace Task.Nodes
             
         }
 
-        public override NodeState Evaluate()
+        public override NodeState Evaluate() //Check if base is within range
         {
             Debug.Log("Is Dropped Flag");
             //Distance check to see if flag is still in base

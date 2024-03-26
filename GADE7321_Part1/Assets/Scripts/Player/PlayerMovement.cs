@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_playerActions == null)
         {
-            _playerActions = new Controls();
+            _playerActions = new Controls(); //Setting up Input
         }
 
         _attack = GetComponent<Attack>();
@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
         _playerActions.Player.Fire.performed += HandlePunch;
     }
 
-    private void HandlePunch(InputAction.CallbackContext obj)
+    private void HandlePunch(InputAction.CallbackContext obj) //Handle punch input
     {
         _playerMovementState = PlayerMovementState.Attacking;
         _attack.AttackOpponent();
@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Update() //Every frame listen for input and move or rotate player
     {
         Vector2 input = _playerActions.Player.Move.ReadValue<Vector2>();
         MovePlayer(input);
@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _playerMovementState = PlayerMovementState.Running;
             //transform.Translate(movePos * Time.deltaTime * playerSpeed, Space.World);
-            agent.Move(movePos * Time.deltaTime * playerSpeed);
+            agent.Move(movePos * Time.deltaTime * playerSpeed); //Move player based on y input
         }
 
         if (_playerMovementState == PlayerMovementState.Running)
@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
     void RotatePlayer(Vector2 input)
     {
         Vector3 moveDir = new Vector3(0, input.x, 0);
-        transform.Rotate(moveDir * turnRate * Time.deltaTime);
+        transform.Rotate(moveDir * turnRate * Time.deltaTime); //Rotate player based on x input
     }
     
 }

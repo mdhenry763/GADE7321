@@ -12,7 +12,7 @@ public class IsAICarryingFlagNode : Node
         this.enemy = enemy;
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate() //Check is AI is carrying Flag
     {
         
         if (HelperMethods.IsCarryFlag(enemy))

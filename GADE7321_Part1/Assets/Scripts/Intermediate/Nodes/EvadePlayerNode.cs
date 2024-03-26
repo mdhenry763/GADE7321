@@ -30,7 +30,7 @@ namespace Task.Nodes
             AddObserver(observer);
         }
 
-        public override NodeState Evaluate()
+        public override NodeState Evaluate() //Evade player until a certain distance
         {
             NotifyObservers("Evade Player Node", AIState.Evading);
             if (!HelperMethods.IsDistanceLessThan(player, agent.transform, maxDistance))
@@ -47,15 +47,14 @@ namespace Task.Nodes
 
         }
 
-        private Vector3 GetEvadePoint()
+        private Vector3 GetEvadePoint() //Evade logic
         {
-            //Could add raycast to the left right and front of the direction
             //Get the direction the player is chasing from
             Vector3 direction = player.position - agent.transform.position;
             direction.Normalize();
             //Move the enemy away from player in this direction
             evadePos = -direction * strafeMultiplier;
-            if (!agent.CalculatePath(evadePos, agent.path))
+            if (!agent.CalculatePath(evadePos, agent.path)) //If path cannot be calculated set a random destination
             {
                 evadePos += new Vector3(Random.Range(evadeMinMax.x, evadeMinMax.y), 0, Random.Range(evadeMinMax.x, evadeMinMax.y));
             }

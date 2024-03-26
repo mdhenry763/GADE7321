@@ -35,6 +35,8 @@ public class GameHUD : MonoBehaviour
 
     IEnumerator ShowRoundText()
     {
+        if (round == 5) yield return null;
+        
         WaitForSeconds wait = new WaitForSeconds(3f);
         roundText.text = $"Round: {round}";
         yield return wait;
