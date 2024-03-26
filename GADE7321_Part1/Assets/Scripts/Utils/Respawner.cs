@@ -36,8 +36,8 @@ namespace Utils
         private void RespawnPlayers()
         {
             //Respawn players between rounds
-            player.position = playerSpawn.position;
-            enemy.position = enemySpawn.position;
+            player.transform.position = playerSpawn.position;
+            enemy.transform.position = enemySpawn.position;
             
             SpawnFlag(true, true, playerFlagSpawn.position);
             SpawnFlag(true, false, enemyFlagSpawn.position);
